@@ -59,7 +59,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 var startTime = time.Now()
 
 func checkStatus() (string, int) {
-	client := http.Client{Timeout: 5 * time.Second}
+	client := http.Client{Timeout: 1800 * time.Second}
 	resp, err := client.Get("https://deploy.tz")
 
 	if err != nil {
