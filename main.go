@@ -29,7 +29,7 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	<!DOCTYPE html>
 	<html>
 	<head>
-		<title>deploy.tz Status</title>
+		<title>Deploy TZ Status</title>
 		<style>
 			body { font-family: Arial, sans-serif; text-align: center; padding: 2rem; }
 			.status { font-size: 1.5rem; margin: 1rem 0; }
@@ -51,8 +51,8 @@ func statusHandler(w http.ResponseWriter, r *http.Request) {
 	</body>
 	</html>
 	`))
-	
-	data.StartTime = startTime.Format(time.RFC3339)
+
+	data.Timestamp = startTime.Format(time.RFC3339)
 	tmpl.Execute(w, data)
 }
 
@@ -61,12 +61,12 @@ var startTime = time.Now()
 func checkStatus() (string, int) {
 	client := http.Client{Timeout: 5 * time.Second}
 	resp, err := client.Get("https://deploy.tz")
-	
+
 	if err != nil {
 		return "DOWN", 0
 	}
 	defer resp.Body.Close()
-	
+
 	return "UP", resp.StatusCode
 }
 
