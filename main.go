@@ -38,7 +38,7 @@ func main() {
 	mux.HandleFunc("/api/status/uptime", apiUptimeHandler)
 
 	// Start Server
-	port := ":8080" // Make configurable if needed (e.g., via env var)
+	port := "0.0.0.0:8000" // Make configurable if needed (e.g., via env var)
 	log.Printf("Starting status page server on %s", port)
 
 	server := &http.Server{
