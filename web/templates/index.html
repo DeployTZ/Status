@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .TargetURL }} Status</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <header class="page-header">
+            <img src="/static/logo.svg" height="40" alt="Logo">
+            <div class="overall-status loading" id="overall-status">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking status...</span>
+            </div>
+        </header>
+
+
+        <section class="current-info">
+            <ul class="stats-list">
+                <li>
+                    <span class="stats-label">Current Status</span>
+                    <span class="stats-value" id="current-status-text">--</span>
+                </li>
+                <li>
+                    <span class="stats-label">Response Time</span>
+                    <span class="stats-value" id="current-response-time">-- ms</span>
+                </li>
+                <li>
+                    <span class="stats-label">Last Checked</span>
+                    <span class="stats-value" id="last-checked-time">--</span>
+                </li>
+            </ul>
+        </section>
+
+        <section class="uptime-summary">
+            <ul class="stats-list">
+                <li>
+                    <span class="stats-label">Uptime (24 Hours)</span>
+                    <span class="stats-value" id="uptime-24h">--%</span>
+                </li>
+                <li>
+                    <span class="stats-label">Uptime (7 Days)</span>
+                    <span class="stats-value" id="uptime-7d">--%</span>
+                </li>
+                <li>
+                    <span class="stats-label">Uptime (30 Days)</span>
+                    <span class="stats-value" id="uptime-30d">--%</span>
+                </li>
+            </ul>
+        </section>
+
+
+
+        <section class="history">
+            <h2>Past {{ .HistoryDays }} Days</h2>
+            <div class="timeline-legend">
+                <span class="legend-item"><span class="legend-color operational"></span> Operational</span>
+                <span class="legend-item"><span class="legend-color outage"></span> Outage</span>
+                <span class="legend-item"><span class="legend-color nodata"></span> No Data</span>
+            </div>
+            <div class="timeline-container" id="timeline-container">
+                <!-- History bars will be generated here by JS -->
+                <div class="loading-placeholder">Loading history...</div>
+            </div>
+        </section>
+
+        <footer>
+            Status page generated at <span id="current-time"></span>. Powered by Go & SQLite.
+        </footer>
+    </div>
+
+    <script src="/static/js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,388 @@
+/* --- Import Font --- */
+@font-face {
+  font-family: "Tilt Neon";
+  /* Adjust the path if your structure is different */
+  src: url("../fonts/TiltNeon-Regular.ttf") format("truetype");
+}
+
+/* --- deploy.tz Inspired Theme Variables --- */
+:root {
+  --main-bg-color: #000000;
+  --secondary-bg-color: #141519;
+  --card-bg-color: #1a1d23;
+  --accent-color: #00c896; /* Main operational color */
+  --accent-glow: rgba(0, 200, 150, 0.15);
+  --text-color: #e8e9ea;
+  --text-muted: #a0a0a0;
+  --danger-color: #e74c3c; /* Outage color */
+  --warning-color: #f39c12; /* Could be used for partial */
+  --nodata-color: #2c313a; /* Color for no data bars */
+  --border-color: rgba(0, 200, 150, 0.1);
+  --border-radius: 12px;
+  --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  --transition: all 0.2s ease;
+  --font-family: "Tilt Neon", system-ui, -apple-system, sans-serif;
+}
+
+/* --- Base Styling --- */
+body {
+  background-color: var(--main-bg-color);
+  background-image:
+    radial-gradient(circle at 25px 25px, rgba(0, 200, 150, 0.03) 2%, transparent 0%),
+    radial-gradient(circle at 75px 75px, rgba(0, 200, 150, 0.03) 2%, transparent 0%);
+  background-size: 100px 100px;
+  color: var(--text-color);
+  font-family: var(--font-family);
+  line-height: 1.6;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 900px;
+  margin: 4rem auto;
+  background-color: var(--card-bg-color);
+  border-radius: var(--border-radius);
+  box-shadow: var(--card-shadow);
+  border: 1px solid var(--border-color);
+  overflow: hidden; /* Contain shadows/borders */
+}
+
+/* --- Header --- */
+.page-header {
+  /* Use a slightly different bg or gradient for header */
+  background: linear-gradient(to right, var(--secondary-bg-color), var(--card-bg-color));
+  color: var(--text-color);
+  padding: 25px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.8em;
+  font-weight: 600; /* Tilt Neon might not have 700 */
+  color: var(--accent-color); /* Use accent for title */
+  text-shadow: 0 0 8px rgba(0, 200, 150, 0.3);
+}
+
+/* --- Overall Status Badge --- */
+.overall-status {
+  padding: 0.5rem 1rem; /* Adjusted padding */
+  border-radius: 30px;
+  font-size: 0.9rem; /* Slightly larger */
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: inline-flex;
+  align-items: center;
+  transition: var(--transition);
+}
+
+.overall-status::before {
+  content: '';
+  display: inline-block;
+  width: 10px; /* Slightly larger dot */
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 8px;
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+.overall-status .status-text {
+    /* The text itself */
+}
+
+/* Status States */
+.overall-status.loading {
+  background-color: rgba(160, 160, 160, 0.15);
+  color: var(--text-muted);
+}
+.overall-status.loading::before {
+  background-color: var(--text-muted);
+  box-shadow: 0 0 8px var(--text-muted);
+}
+
+.overall-status.operational {
+  background-color: var(--accent-glow);
+  color: var(--accent-color);
+}
+.overall-status.operational::before {
+  background-color: var(--accent-color);
+  box-shadow: 0 0 8px var(--accent-color);
+}
+
+.overall-status.outage {
+  background-color: rgba(231, 76, 60, 0.15);
+  color: var(--danger-color);
+}
+.overall-status.outage::before {
+  background-color: var(--danger-color);
+  box-shadow: 0 0 8px var(--danger-color);
+}
+
+/* Unknown/Error State (reuse loading or create specific) */
+.overall-status.unknown {
+  background-color: rgba(243, 156, 18, 0.15);
+  color: var(--warning-color);
+}
+.overall-status.unknown::before {
+  background-color: var(--warning-color);
+  box-shadow: 0 0 8px var(--warning-color);
+  animation: none; /* Maybe don't pulse on unknown */
+}
+
+
+/* --- Current Info & Uptime Summary --- */
+/* Style like a stats list inside a card */
+.current-info, .uptime-summary {
+  padding: 5px 25px 15px 25px; /* Padding around the group */
+  border-bottom: 1px solid var(--border-color);
+}
+.current-info:last-child, .uptime-summary:last-child {
+    border-bottom: none;
+}
+
+.stats-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.stats-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgba(0, 200, 150, 0.05); /* Subtle separator */
+  transition: var(--transition);
+}
+
+.stats-list li:last-child {
+  border-bottom: none;
+}
+
+.stats-label {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.stats-value {
+  /* Main text color is fine, or accent */
+  color: var(--text-color);
+  /* color: var(--accent-color); */
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.stats-list li:hover {
+  background-color: rgba(0, 200, 150, 0.03); /* Very subtle hover */
+}
+
+
+/* --- History Timeline --- */
+.history {
+  padding: 25px 30px;
+}
+
+.history h2 {
+  color: var(--accent-color); /* Accent color for section title */
+  font-size: 1.5em;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 20px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+/* Underline like deploy.tz card titles */
+.history h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px;
+  height: 3px;
+  background-color: var(--accent-color);
+  border-radius: 3px;
+}
+
+.timeline-legend {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 15px;
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
+
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  margin-right: 5px;
+  display: inline-block;
+}
+.legend-color.operational { background-color: var(--accent-color); }
+.legend-color.outage { background-color: var(--danger-color); }
+.legend-color.nodata { background-color: var(--nodata-color); }
+
+
+.timeline-container {
+  display: grid;
+  grid-template-columns: repeat(var(--history-days, 90), 1fr);
+  gap: 2px;
+  height: 35px; /* Slightly shorter bars */
+  background-color: var(--secondary-bg-color); /* Darker background for contrast */
+  padding: 4px;
+  border-radius: 6px; /* Smaller radius */
+  overflow: hidden;
+  border: 1px solid rgba(0, 200, 150, 0.05);
+}
+
+.timeline-bar {
+  background-color: var(--nodata-color); /* Default: No Data */
+  border-radius: 2px;
+  cursor: default;
+  position: relative;
+  transition: transform 0.1s ease-in-out;
+}
+
+.timeline-bar:hover {
+   transform: scaleY(1.15); /* Slightly more pronounced hover */
+   z-index: 10;
+   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Add shadow on hover */
+}
+
+.timeline-bar.operational { background-color: var(--accent-color); }
+.timeline-bar.outage { background-color: var(--danger-color); }
+.timeline-bar.partial {
+    /* Gradient using theme colors */
+    background: linear-gradient(to top, var(--danger-color) 50%, var(--accent-color) 50%);
+}
+
+
+/* Tooltip Styles (Dark Theme) */
+.timeline-bar::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 120%; /* Position above */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #000000; /* Black background */
+    color: var(--text-muted); /* Muted text */
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8em;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    pointer-events: none;
+    z-index: 20;
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+}
+
+.timeline-bar:hover::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.loading-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: var(--text-muted);
+    padding: 10px 0; /* Adjust padding */
+    font-size: 0.9em;
+}
+
+/* --- Footer --- */
+footer {
+    text-align: center;
+    padding: 20px 30px;
+    font-size: 0.85em;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border-color);
+    background-color: var(--secondary-bg-color); /* Match darker bg */
+    border-bottom-left-radius: var(--border-radius); /* Match container radius */
+    border-bottom-right-radius: var(--border-radius);
+}
+
+/* --- Scrollbar --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--main-bg-color);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 200, 150, 0.5);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-color);
+}
+
+/* --- Selection --- */
+::selection {
+  background-color: var(--accent-color);
+  color: var(--main-bg-color);
+}
+
+/* --- Pulse Animation (for status dot) --- */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(0.9);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+
+
+/* --- Responsive Adjustments --- */
+@media (max-width: 768px) {
+    body { padding: 10px; }
+    .container { margin: 15px auto; }
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
+    .page-header h1 {
+        margin-bottom: 15px;
+        font-size: 1.6em;
+     }
+    .overall-status { margin-top: 5px; /* Reduce space */ }
+
+    .stats-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0.75rem 0;
+    }
+     .stats-value {
+         margin-top: 4px;
+         font-size: 1.1em; /* Make value slightly bigger on mobile */
+     }
+
+    .history { padding: 20px; }
+    .timeline-container { gap: 1px; height: 30px; }
+}
+
+@media (max-width: 480px) {
+     .page-header h1 { font-size: 1.4em; }
+     .history h2 { font-size: 1.3em; }
+     .timeline-legend { font-size: 0.75em; margin-bottom: 10px; }
+     .legend-item { margin-left: 10px; }
+}
